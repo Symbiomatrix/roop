@@ -53,7 +53,11 @@ sep = "/"
 if os.name == "nt":
     sep = "\\"
 
-
+def start_batch(bargs):
+    global args
+    args = bargs
+    start()
+    
 def start_processing():
     start_time = time.time()
     if args['gpu']:
