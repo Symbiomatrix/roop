@@ -52,11 +52,6 @@ if not args['cores_count']:
 sep = "/"
 if os.name == "nt":
     sep = "\\"
-
-def start_batch(bargs):
-    global args
-    args = bargs
-    start()
     
 def start_processing():
     start_time = time.time()
@@ -144,7 +139,11 @@ def status(string):
         window.update()
 
 
-def start():
+def start(bargs = None):
+    if bargs is not None:
+        global args
+        args = bargs
+    start()
     print("DON'T WORRY. IT'S NOT STUCK/CRASHED.\n" * 5)
     if not args['source_img'] or not os.path.isfile(args['source_img']):
         print("\n[WARNING] Please select an image containing a face.")
@@ -192,14 +191,10 @@ def start():
     save_path = args['output_file'] if args['output_file'] else output_dir + "/" + video_name + ".mp4"
     print("\n\nVideo saved as:", save_path, "\n\n")
     status("swap successful!")
-
-
-if __name__ == "__main__":
+    
+def create_gui():
     global status_label, window
-    if args['source_img']:
-        args['cli_mode'] = True
-        start()
-        quit()
+    
     window = tk.Tk()
     window.geometry("600x700")
     window.title("roop")
@@ -239,3 +234,12 @@ if __name__ == "__main__":
     status_label.place(x=10,y=640,width=580,height=30)
     
     window.mainloop()
+
+if __name__ == "__main__":
+    if args['source_img']:
+        args['cli_mode'] = True
+        start()
+        quit()
+    else:
+        create_gui()
+
